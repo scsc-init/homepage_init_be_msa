@@ -1,0 +1,6 @@
+[submodule "homepage_init_backend"]
+	path = homepage_init_backend
+	url = https://github.com/scsc-init/homepage_init_backend.git
+[submodule "homepage_init_bot"]
+	path = homepage_init_bot
+	url = https://github.com/scsc-init/homepage_init_bot.git
