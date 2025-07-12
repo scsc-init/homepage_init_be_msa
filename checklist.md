@@ -9,6 +9,7 @@
 ## Backend DB
 
 - [ ] .env 값 조정
+- [ ] 기본 값 push <zizonms@snu.ac.kr>
 
 ## Backend Bot
 
