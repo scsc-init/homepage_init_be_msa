@@ -1,38 +1,13 @@
 services:
   backend:
-    build: ./homepage_init_backend
-    ports:
-      - "8080:8080"
+    extends:
+      file: ./homepage_init_backend/docker-compose.yml
+      service: backend
     networks:
       - app-net
-    env_file:
-      - ./homepage_init_backend/.env
-    volumes:
-      - ./homepage_init_backend:/app/
     depends_on:
       - rabbitmq
-    entrypoint: bash
-    command: >
-      -c '
-      echo "Checking DB at /app/${SQLITE_FILENAME}";
 
-      if [ ! -f "/app/${SQLITE_FILENAME}" ]; then
-        echo "Database was not found. Initializing...";
-        mkdir -p /app/db
-        chmod +x ./script/*.sh &&
-        ./script/init_db.sh "/app/${SQLITE_FILENAME}" &&
-        ./script/insert_scsc_global_status.sh "/app/${SQLITE_FILENAME}" &&
-        ./script/insert_user_roles.sh "/app/${SQLITE_FILENAME}" &&
-        ./script/insert_majors.sh "/app/${SQLITE_FILENAME}" ./docs/majors.csv &&
-        ./script/insert_boards.sh "/app/${SQLITE_FILENAME}" &&
-        ./script/insert_sample_users.sh "/app/${SQLITE_FILENAME}" &&
-        ./script/insert_sample_articles.sh "/app/${SQLITE_FILENAME}";
-      else
-        echo "Database already exists. Skipping initialization.";
-      fi;
-
-      exec fastapi run main.py --host 0.0.0.0 --port 8080
-      '
   rabbitmq:
     image: rabbitmq:3-management
     ports:
@@ -48,6 +23,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
+
   bot:
     build: ./homepage_init_bot
     ports:
@@ -61,11 +37,13 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+
   redis:
     image: redis:7
     ports:
       - "6379:6379"
     networks:
       - app-net
+
 networks:
   app-net:
