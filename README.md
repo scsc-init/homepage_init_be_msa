@@ -1,4 +1,10 @@
-### Change user
+### Documentation Index
+- [initialize server.md](/docs/initialize%20server.md): manual for cloning the repository and initializing a server
+- [update repository.md](/docs/update%20repository.md): manual for updating(pulling main branch) the repository
+- [developer tips.md](/docs/developer%20tips.md): tips for developers
+- [deployer tips.md](/docs/deployer%20tips.md): tips for deployers
+
+### Change user(only on server)
 Change user to `init-runner`
 Be careful not to create files with accounts that are not `init-runner`
 
@@ -12,60 +18,17 @@ Change directory(if exist) after substituting user to `init-runner`
 cd homepage_init_be_msa/
 ```
 
-### Download the repository
-
-#### Clone the repository
-```bash
-git clone https://github.com/scsc-init/homepage_init_be_msa.git
-cd homepage_init_be_msa
-git submodule init
-git submodule update --recursive
-```
-
-#### Pull the repository(on server)
-```bash
-git pull origin main
-git submodule update --recursive
-```
-
-#### Update submodules(when developing)
-```bash
-git submodule foreach git pull origin main
-```
-
 ### File Structure
 
 ```
 /homepage_init_be_msa
 ㄴ/homepage_init_backend (submodule)
 ㄴ/homepage_init_bot (submodule)
+ㄴ/docs/
+ㄴ/nginx/init.conf: nginx config file. included in /etc/nginx/nginx.conf on server.
 ㄴ.env
 ㄴdocker-compose.yml
 ```
-
-
-### Prerequisites
-- Make .env files and data files
-```bash
-touch .env
-touch ./homepage_init_backend/.env
-touch ./homepage_init_bot/.env
-touch ./homepage_init_bot/src/bot/discord/data/data.json
-```
-
-- Make directories defined in `./homepage_init_backend/.env`
-```bash
-mkdir ./homepage_init_backend/db
-mkdir ./homepage_init_backend/download
-mkdir ./homepage_init_backend/static
-mkdir ./homepage_init_backend/static/image
-mkdir ./homepage_init_backend/static/image/photo
-mkdir ./homepage_init_backend/static/article
-```
-
-- Invite the bot to a discord server
-- Make roles(defined at [homepage_init_backend/docs/common.md](homepage_init_backend/docs/common.md)) at the discord server.
-
 
 ### `.env` contents
 
