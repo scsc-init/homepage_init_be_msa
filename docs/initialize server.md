@@ -3,7 +3,7 @@ Change user to `init-runner`
 Be careful not to create files with accounts that are not `init-runner`
 
 ```bash
-sudo -u  init-runner -i
+sudo -u init-runner -i
 ```
 
 ### Clone the repository
