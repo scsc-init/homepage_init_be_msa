@@ -45,6 +45,14 @@ git submodule foreach git pull origin main
 
 
 ### Prerequisites
+- Make .env files and data files
+```bash
+touch .env
+touch ./homepage_init_backend/.env
+touch ./homepage_init_bot/.env
+touch ./homepage_init_bot/src/bot/discord/data/data.json
+```
+
 - Make directories defined in `./homepage_init_backend/.env`
 ```bash
 mkdir ./homepage_init_backend/db
