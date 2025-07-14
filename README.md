@@ -6,7 +6,15 @@ Be careful not to create files with accounts that are not `init-runner`
 sudo -u  init-runner -i
 ```
 
-### Clone the repository
+Change directory(if exist) after substituting user to `init-runner`
+
+```bash
+cd homepage_init_be_msa/
+```
+
+### Download the repository
+
+#### Clone the repository
 ```bash
 git clone https://github.com/scsc-init/homepage_init_be_msa.git
 cd homepage_init_be_msa
@@ -14,7 +22,13 @@ git submodule init
 git submodule update --recursive
 ```
 
-### Update submodules(when required)
+#### Pull the repository(on server)
+```bash
+git pull origin main
+git submodule update --recursive
+```
+
+#### Update submodules(when developing)
 ```bash
 git submodule foreach git pull origin main
 ```
@@ -66,5 +80,5 @@ linux, docker, docker compose>=2.25.0 is required.
 In the root directory,
 
 ```bash
-docker compose up --build
+docker compose up -d
 ```
