@@ -67,7 +67,11 @@ To set config file [/nginx/init.conf](/nginx/init.conf) working on nginx, follow
     * Add `include /home/init-runner/homepage_init_be_msa/nginx/init.conf;` between the code above
 
 - Restart nginx
+Check the conf file
 ```bash
 sudo nginx -t
+```
+If it succeeded, then run
+```bash
 sudo systemctl restart nginx
 ```
