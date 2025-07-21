@@ -21,6 +21,7 @@ touch .env
 touch ./homepage_init_backend/.env
 touch ./homepage_init_bot/.env
 touch ./homepage_init_bot/src/bot/discord/data/data.json
+cp ./homepage_init_backend/script/init_db/presidents.example.csv ./homepage_init_backend/script/init_db/presidents.csv
 ```
 
 - Make directories defined in `./homepage_init_backend/.env`
@@ -36,7 +37,7 @@ mkdir ./homepage_init_backend/static/article
 - Invite the bot to a discord server
 - Make roles(defined at [homepage_init_backend/docs/common.md](homepage_init_backend/docs/common.md)) at the discord server.
 
-### `.env` settings
+### `.env`  and data settings
 Follow [README.md](/README.md)
 
 ### Docker Compose Building and Running
