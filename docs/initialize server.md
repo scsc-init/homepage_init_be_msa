@@ -36,7 +36,7 @@ mkdir ./homepage_init_backend/static/article
 
 - Invite the bot to a discord server
 - Make roles(defined at [homepage_init_backend/docs/common.md](homepage_init_backend/docs/common.md)) at the discord server.
-- Create a **private** text channel "회비-신청" in the server and add executive or higher permissions.
+- Create a **private** text channel "지원금-신청" in the server and add executive or higher permissions.
 
 ### `.env`  and data settings
 Follow [README.md](/README.md)
