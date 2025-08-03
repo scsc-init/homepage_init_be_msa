@@ -31,6 +31,7 @@ mkdir ./homepage_init_backend/download
 mkdir ./homepage_init_backend/static
 mkdir ./homepage_init_backend/static/image
 mkdir ./homepage_init_backend/static/image/photo
+mkdir ./homepage_init_backend/static/image/pfps
 mkdir ./homepage_init_backend/static/article
 ```
 
