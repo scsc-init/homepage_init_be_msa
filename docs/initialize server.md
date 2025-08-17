@@ -28,6 +28,7 @@ cp ./homepage_init_backend/script/init_db/presidents.example.csv ./homepage_init
 ```bash
 mkdir ./homepage_init_backend/db
 mkdir ./homepage_init_backend/download
+mkdir ./homepage_init_backend/logs
 mkdir ./homepage_init_backend/static
 mkdir ./homepage_init_backend/static/image
 mkdir ./homepage_init_backend/static/image/photo
