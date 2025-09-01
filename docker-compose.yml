@@ -10,9 +10,6 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    ports:
-      - "15672:15672"
-      - "5672:5672"
     networks:
       - app-net
     environment:
@@ -27,7 +24,7 @@ services:
   bot:
     build: ./homepage_init_bot
     ports:
-      - "8081:8081"
+      - "127.0.0.1:8081:8081"
     networks:
       - app-net
     env_file:
@@ -40,8 +37,6 @@ services:
 
   redis:
     image: redis:7
-    ports:
-      - "6379:6379"
     networks:
       - app-net
 
