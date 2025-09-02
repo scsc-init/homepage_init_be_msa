@@ -27,7 +27,7 @@ cd homepage_init_be_msa
 ```bash
 git pull --ff-only origin main
 git submodule sync --recursive
-git submodule update --recursive
+git submodule update --init --recursive
 ```
 
 ### 실행 전 준비사항
@@ -65,6 +65,20 @@ mkdir -p \
 ### `.env`와 data 설정
 [README.md](/README.md) 및 서브모듈의 README를 따라 필요한 값을 설정합니다. 
 
+#### `./.env`
+`./homepage_init_backend/.env`에 정의된 `SQLITE_FILENAME`과 동일한 값으로 설정합니다. 
+
+```
+SQLITE_FILENAME="db/YOUR_DB_FILENAME.db"
+```
+
+#### `./homepage_init_backend/.env`
+`homepage_init_backend`의 README를 따릅니다. 
+
+#### `./homepage_init_bot/.env`
+`homepage_init_bot`의 README를 따릅니다. 
+
+
 ### 도커 실행
 
 linux, docker, docker compose>=2.25.0, nginx를 요구합니다. 
@@ -78,8 +92,8 @@ docker compose up --build -d
 [/nginx/init.conf](/nginx/init.conf) nginx 설정 파일을 다음을 따라 설정합니다. 
 
 - 서버에서 `/etc/nginx/nginx.conf`를 수정합니다. 
-  * 파일을 루트 권한으로 엽니다. 
-  * http 블록 하단 근처의 다음 부분을 찾습니다. 
+  - 파일을 루트 권한으로 엽니다. 
+  - http 블록 하단 근처의 다음 부분을 찾습니다. 
   ```nginx
   ...
   http {
@@ -90,14 +104,14 @@ docker compose up --build -d
   }
   ...
   ```
-  * `include /home/init-runner/homepage_init_be_msa/nginx/init.conf;`를 두 줄 사이에 추가합니다.
+  - `include /home/init-runner/homepage_init_be_msa/nginx/init.conf;`를 두 줄 사이에 추가합니다.
 
 - nginx를 재시작합니다.
-  * 설정 파일이 유효한지 확인합니다. 
+  - 설정 파일이 유효한지 확인합니다. 
   ```bash
   sudo nginx -t
   ```
-  * 유효하다면 nginx를 재시작합니다. 
+  - 유효하다면 nginx를 재시작합니다. 
   ```bash
   sudo systemctl restart nginx
   ```
