@@ -68,7 +68,7 @@ mkdir -p \
 #### `./.env`
 `./homepage_init_backend/.env`에 정의된 `SQLITE_FILENAME`과 동일한 값으로 설정합니다. 
 
-```
+```env
 SQLITE_FILENAME="db/YOUR_DB_FILENAME.db"
 ```
 
