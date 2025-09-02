@@ -1,5 +1,5 @@
 ### Documentation Index
-- [deploy manual.md](/docs/deploy%manual.md): manual for deployment
+- [deploy manual.md](/docs/deploy%20manual.md): manual for deployment
 - [update repository.md](/docs/update%20repository.md): manual for updating(pulling main branch) the repository
 - [developer tips.md](/docs/developer%20tips.md): tips for developers
 - [deployer tips.md](/docs/deployer%20tips.md): tips for deployers

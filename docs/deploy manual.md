@@ -37,8 +37,8 @@ touch .env
 touch ./homepage_init_backend/.env
 touch ./homepage_init_bot/.env
 mkdir -p ./homepage_init_bot/src/bot/discord/data
-touch ./homepage_init_bot/src/bot/discord/data/data.json
-cp ./homepage_init_backend/script/init_db/presidents.example.csv ./homepage_init_backend/script/init_db/presidents.csv
+cp -n ./homepage_init_bot/src/bot/discord/data/data.example.json ./homepage_init_bot/src/bot/discord/data/data.json
+cp -n ./homepage_init_backend/script/init_db/presidents.example.csv ./homepage_init_backend/script/init_db/presidents.csv
 ```
 
 - `.env` 파일 권한을 제한합니다.
