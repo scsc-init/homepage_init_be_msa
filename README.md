@@ -1,5 +1,5 @@
 ### Documentation Index
-- [initialize server.md](/docs/initialize%20server.md): manual for cloning the repository and initializing a server
+- [deploy manual.md](/docs/deploy%manual.md): manual for deployment
 - [update repository.md](/docs/update%20repository.md): manual for updating(pulling main branch) the repository
 - [developer tips.md](/docs/developer%20tips.md): tips for developers
 - [deployer tips.md](/docs/deployer%20tips.md): tips for deployers
