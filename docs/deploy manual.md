@@ -55,6 +55,7 @@ mkdir -p \
   ./homepage_init_backend/static/article \
   ./homepage_init_backend/static/image/photo \
   ./homepage_init_backend/static/image/pfps \
+  ./homepage_init_backend/static/w \
   ./homepage_init_bot/logs
 ```
 
