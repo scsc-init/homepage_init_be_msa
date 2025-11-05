@@ -22,15 +22,11 @@ services:
       retries: 5
 
   bot:
-    build: ./homepage_init_bot
-    ports:
-      - "127.0.0.1:8081:8081"
+    extends:
+        file: ./homepage_init_bot/docker-compose.yml
+        service: bot
     networks:
       - app-net
-    env_file:
-      - ./homepage_init_bot/.env
-    volumes:
-      - ./homepage_init_bot:/app/
     depends_on:
       rabbitmq:
         condition: service_healthy
