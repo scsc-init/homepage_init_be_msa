@@ -31,6 +31,8 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      backend:
+        condition: service_healthy
 
   redis:
     image: redis:7
