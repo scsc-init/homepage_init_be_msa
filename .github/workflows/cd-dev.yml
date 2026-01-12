@@ -1,14 +1,32 @@
-name: CD Develop Branch
+name: CD Develop (Triggered by Submodules)
 
 on:
   push:
     branches: [ develop ]
-  workflow_dispatch:
+  repository_dispatch:
+    types: [ submodule-updated ]
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Root
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SYNC_TOKEN }}
+          submodules: true
+          fetch-depth: 0
+
+      - name: Update Submodule Reference
+        if: github.event_type == 'repository_dispatch'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git submodule update --remote ${{ github.event.client_payload.submodule }}
+          git add .
+          git commit -m "chore: update ${{ github.event.client_payload.submodule }} to latest"
+          git push origin develop
+
       - name: Deploy via SSH
         uses: appleboy/ssh-action@v1.0.3
         with:
