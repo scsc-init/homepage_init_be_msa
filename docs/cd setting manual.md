@@ -120,30 +120,32 @@ services:
 
 ## 5. Nginx Configuration for Dev
 
-Add a new server block to your Nginx configuration on the Ubuntu server to handle the `dev` subdomain:
+[/nginx/init.dev.conf](/nginx/init.dev.conf) nginx 설정 파일을 다음을 따라 설정합니다. 
 
-```nginx
-upstream init_dev_backend {
-    server 127.0.0.1:9080;
-}
+- 서버에서 `/etc/nginx/nginx.conf`를 수정합니다. 
+  - 파일을 루트 권한으로 엽니다. 
+  - http 블록 하단 근처의 다음 부분을 찾습니다. 
+  ```nginx
+  ...
+  http {
+      ...
+      include /etc/nginx/conf.d/*.conf;
+      include /etc/nginx/sites-enabled/*;
+      ...
+  }
+  ...
+  ```
+  - `include /var/www/init_be_msa_dev/nginx/init.dev.conf;`를 두 줄 사이에 추가합니다.
 
-server {
-    listen 80;
-    server_name dev.scsc.tteokgook1.net;
-
-    location /api {
-        proxy_pass http://init_dev_backend;
-        # ... keep other proxy headers same as main ...
-    }
-
-    location / {
-        # If the bot has a web UI or webhook listener
-        proxy_pass http://127.0.0.1:9081; 
-        # ... keep other proxy headers same as main ...
-    }
-}
-
-```
+- nginx를 재시작합니다.
+  - 설정 파일이 유효한지 확인합니다. 
+  ```bash
+  sudo nginx -t
+  ```
+  - 유효하다면 nginx를 재시작합니다. 
+  ```bash
+  sudo systemctl restart nginx
+  ```
 
 ---
 
