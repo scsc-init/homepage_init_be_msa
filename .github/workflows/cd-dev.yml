@@ -1,0 +1,34 @@
+name: CD Develop Branch
+
+on:
+  push:
+    branches: [ develop ]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/init_be_msa_dev
+            
+            # 1. Pull the root repo
+            
+            git fetch origin develop
+            git reset --hard origin/develop
+            
+
+            # 2. Update submodules to latest develop
+            git submodule update --init --recursive
+            git submodule foreach 'git fetch origin develop && git checkout develop && git pull origin develop'
+
+            # 3. Build and Run
+            # We use -p to create a unique project name (isolation)
+            # We use a separate override file for dev ports
+            docker compose -p init-dev -f docker-compose.yml -f docker-compose.dev.yml up -d --build
