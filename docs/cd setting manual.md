@@ -29,7 +29,16 @@ sudo chown cd-runner:cd-runner /var/www/init_be_msa_dev
 
 ```
 
-Manually create the `.env` and `data.json` files in this directory (or specific submodule paths) since these contain sensitive or persistent data that shouldn't be overwritten by git pulls.
+```bash
+sudo -u cd-runner -i
+git clone -b develop https://github.com/scsc-init/homepage_init_be_msa.git .
+git submodule update --init --recursive
+git submodule foreach 'git fetch origin develop && git checkout develop && git pull origin develop'
+
+```
+
+Manually create the `.env`, `data.json`, etc. in this directory or specific submodule paths.
+Use `SQLITE_FILENAME=db/dev_database.db`
 
 ---
 
