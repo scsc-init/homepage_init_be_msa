@@ -1,0 +1,61 @@
+name: CD Develop (Triggered by Submodules)
+
+on:
+  push:
+    branches: [ develop ]
+  repository_dispatch:
+    types: [ submodule-updated ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Root
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.SYNC_TOKEN }}
+          submodules: true
+          fetch-depth: 0
+
+      - name: Update Submodule Reference
+        if: github.event_name == 'repository_dispatch'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          # Update all submodules to the latest head of their tracked branches
+          git submodule update --remote --recursive
+          
+          # Check if anything changed
+          git add .
+          if git diff-index --quiet HEAD; then
+            echo "No changes detected in submodules. Skipping commit."
+          else
+            echo "Changes detected. Committing and pushing..."
+            git commit -m "chore: auto-update submodules [skip ci]"
+            git push origin develop
+          fi
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1.0.3
+        with:
+          host: ${{ secrets.REMOTE_HOST }}
+          username: ${{ secrets.REMOTE_USER }}
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script: |
+            cd /var/www/init_be_msa_dev
+            
+            # 1. Pull the root repo
+            
+            git fetch origin develop
+            git reset --hard origin/develop
+            
+
+            # 2. Update submodules to latest develop
+            git submodule update --init --recursive
+            git submodule foreach 'git fetch origin develop && git checkout develop && git pull origin develop'
+
+            # 3. Build and Run
+            # We use -p to create a unique project name (isolation)
+            # We use a separate override file for dev ports
+            docker compose -p init-dev -f docker-compose.yml -f docker-compose.dev.yml up -d --build
