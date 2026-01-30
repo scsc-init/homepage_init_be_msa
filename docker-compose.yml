@@ -16,7 +16,6 @@ services:
     environment:
       - RABBITMQ_DEFAULT_USER=guest
       - RABBITMQ_DEFAULT_PASS=guest
-      - RABBITMQ_LOGS=warning
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
       interval: 3s
