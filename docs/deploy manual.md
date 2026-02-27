@@ -2,7 +2,7 @@
 
 > 최초작성일: 2025-07-14
 >
-> 최신개정일: 2025-09-02
+> 최신개정일: 2026-02-27
 >
 > 최신개정자: 이한경
 >
@@ -33,30 +33,18 @@ git submodule update --init --recursive
 ### 실행 전 준비사항
 - `.env` 파일과 data 파일을 생성합니다. 
 ```bash
-touch .env
 touch ./homepage_init_backend/.env
+touch ./homepage_init_backend/.db_admin_password
+touch ./homepage_init_backend/flyway.conf
 touch ./homepage_init_bot/.env
 mkdir -p ./homepage_init_bot/src/bot/discord/data
 cp -n ./homepage_init_bot/src/bot/discord/data/data.example.json ./homepage_init_bot/src/bot/discord/data/data.json
 cp -n ./homepage_init_backend/script/init_db/presidents.example.csv ./homepage_init_backend/script/init_db/presidents.csv
 ```
 
-- `.env` 파일 권한을 제한합니다.
+- `.env` 파일 등의 권한을 제한합니다.
 ```bash
-chmod 600 .env ./homepage_init_backend/.env ./homepage_init_bot/.env
-```
-
-- 서브모듈에 필요한 폴더를 생성합니다. 
-```bash
-mkdir -p \
-  ./homepage_init_backend/db \
-  ./homepage_init_backend/download \
-  ./homepage_init_backend/logs \
-  ./homepage_init_backend/static/article \
-  ./homepage_init_backend/static/image/photo \
-  ./homepage_init_backend/static/image/pfps \
-  ./homepage_init_backend/static/w \
-  ./homepage_init_bot/logs
+chmod 600 ./homepage_init_backend/.env ./homepage_init_backend/.db_admin_password ./homepage_init_backend/flyway.conf ./homepage_init_bot/.env
 ```
 
 - 디스코드 봇을 디스코드 서버에 초대합니다. 
@@ -65,13 +53,6 @@ mkdir -p \
 
 ### `.env`와 data 설정
 [README.md](/README.md) 및 서브모듈의 README를 따라 필요한 값을 설정합니다. 
-
-#### `./.env`
-`./homepage_init_backend/.env`에 정의된 `SQLITE_FILENAME`과 동일한 값으로 설정합니다. 
-
-```env
-SQLITE_FILENAME="db/YOUR_DB_FILENAME.db"
-```
 
 #### `./homepage_init_backend/.env`
 `homepage_init_backend`의 README를 따릅니다. 

@@ -8,6 +8,33 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
+      db:
+        condition: service_healthy
+
+  db:
+    extends:
+      file: ./homepage_init_backend/docker-compose.yml
+      service: db
+    env_file:
+      - ./homepage_init_backend/.env
+    networks:
+      - app-net
+
+  pgadmin:
+    extends:
+      file: ./homepage_init_backend/docker-compose.yml
+      service: pgadmin
+    env_file:
+      - ./homepage_init_backend/.env
+    networks:
+      - app-net
+
+  flyway:
+    extends:
+      file: ./homepage_init_backend/docker-compose.yml
+      service: flyway
+    networks:
+      - app-net
 
   rabbitmq:
     image: rabbitmq:3-alpine
@@ -41,3 +68,7 @@ services:
 
 networks:
   app-net:
+
+secrets:
+  db_admin_password:
+    file: ./homepage_init_backend/.db_admin_password
