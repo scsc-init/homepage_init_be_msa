@@ -4,6 +4,13 @@ services:
       - "127.0.0.1:9080:8080" # Different host port for dev
     environment:
       - SQLITE_FILENAME=db/dev_database.db
+  db:
+    ports: !override
+      - "6432:5432" # Different host port for dev
+
+  pgadmin:
+    ports: !override
+      - "9085:80" # Different host port for dev
 
   bot:
     ports: !override

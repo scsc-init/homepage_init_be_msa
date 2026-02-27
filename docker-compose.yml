@@ -9,6 +9,27 @@ services:
       rabbitmq:
         condition: service_healthy
 
+  db:
+    extends:
+      file: ./homepage_init_backend/docker-compose.yml
+      service: db
+    networks:
+      - app-net
+
+  pgadmin:
+    extends:
+      file: ./homepage_init_backend/docker-compose.yml
+      service: pgadmin
+    networks:
+      - app-net
+
+  flyway:
+    extends:
+      file: ./homepage_init_backend/docker-compose.yml
+      service: flyway
+    networks:
+      - app-net
+
   rabbitmq:
     image: rabbitmq:3-alpine
     networks:
