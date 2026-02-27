@@ -46,6 +46,11 @@ cp -n ./homepage_init_bot/src/bot/discord/data/data.example.json ./homepage_init
 chmod 600 ./homepage_init_backend/.env ./homepage_init_backend/.db_admin_password ./homepage_init_backend/flyway.conf ./homepage_init_bot/.env
 ```
 
+- `homepage_init_backend`의 env 링크를 만들어 docker compose가 해당 env를 사용할 수 있게 합니다. 
+```bash
+ln -s homepage_init_backend/.env .env
+```
+
 - 디스코드 봇을 디스코드 서버에 초대합니다. 
 - 디스코드 서버에 [/homepage_init_backend/docs/common.md](/homepage_init_backend/docs/common.md)에서 정의하는 역할을 만듭니다.
 - 관리자만 볼 수 있는 "지원금-신청" 텍스트 채널을 서버에 만듭니다. 

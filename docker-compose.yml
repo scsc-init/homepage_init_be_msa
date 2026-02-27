@@ -13,8 +13,6 @@ services:
     extends:
       file: ./homepage_init_backend/docker-compose.yml
       service: db
-    env_file:
-      - ./homepage_init_backend/.env
     networks:
       - app-net
 
@@ -22,8 +20,6 @@ services:
     extends:
       file: ./homepage_init_backend/docker-compose.yml
       service: pgadmin
-    env_file:
-      - ./homepage_init_backend/.env
     networks:
       - app-net
 
@@ -66,7 +62,3 @@ services:
 
 networks:
   app-net:
-
-secrets:
-  db_admin_password:
-    file: ./homepage_init_backend/.db_admin_password
