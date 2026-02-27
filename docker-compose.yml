@@ -8,8 +8,6 @@ services:
     depends_on:
       rabbitmq:
         condition: service_healthy
-      db:
-        condition: service_healthy
 
   db:
     extends:

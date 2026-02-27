@@ -31,7 +31,7 @@ git submodule update --init --recursive
 ```
 
 ### 실행 전 준비사항
-- `.env` 파일과 data 파일을 생성합니다. 
+- `.env` 파일과 data 파일을 생성합니다. submodule 레포지토리를의 README를 참고하여 생성한 파일의 내용을 작성합니다. 
 ```bash
 touch ./homepage_init_backend/.env
 touch ./homepage_init_backend/.db_admin_password
@@ -39,7 +39,6 @@ touch ./homepage_init_backend/flyway.conf
 touch ./homepage_init_bot/.env
 mkdir -p ./homepage_init_bot/src/bot/discord/data
 cp -n ./homepage_init_bot/src/bot/discord/data/data.example.json ./homepage_init_bot/src/bot/discord/data/data.json
-cp -n ./homepage_init_backend/script/init_db/presidents.example.csv ./homepage_init_backend/script/init_db/presidents.csv
 ```
 
 - `.env` 파일 등의 권한을 제한합니다.
@@ -53,13 +52,6 @@ chmod 600 ./homepage_init_backend/.env ./homepage_init_backend/.db_admin_passwor
 
 ### `.env`와 data 설정
 [README.md](/README.md) 및 서브모듈의 README를 따라 필요한 값을 설정합니다. 
-
-#### `./homepage_init_backend/.env`
-`homepage_init_backend`의 README를 따릅니다. 
-
-#### `./homepage_init_bot/.env`
-`homepage_init_bot`의 README를 따릅니다. 
-
 
 ### 도커 실행
 
