@@ -3,7 +3,7 @@
 ```pgloader
 LOAD DATABASE
      FROM sqlite:///db/YOUR_DB_FILENAME.db
-     INTO postgresql://admin_user:admin_password_here@localhost:5432/your_database_name
+     INTO postgresql://postgres:admin_password_here@localhost:5432/main_db
 
  WITH data only,
       on error resume next,
