@@ -39,10 +39,9 @@ services:
       - RABBITMQ_DEFAULT_PASS=guest
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "ping"]
-      interval: 5s
+      interval: 15s
       timeout: 5s
       retries: 10
-      start_period: 30s
 
   bot:
     extends:
