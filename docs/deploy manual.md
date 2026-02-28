@@ -2,7 +2,7 @@
 
 > 최초작성일: 2025-07-14
 >
-> 최신개정일: 2025-09-02
+> 최신개정일: 2026-02-27
 >
 > 최신개정자: 이한경
 >
@@ -31,32 +31,22 @@ git submodule update --init --recursive
 ```
 
 ### 실행 전 준비사항
-- `.env` 파일과 data 파일을 생성합니다. 
+- `.env` 파일과 data 파일을 생성합니다. submodule 레포지토리를의 README를 참고하여 생성한 파일의 내용을 작성합니다. 
 ```bash
-touch .env
 touch ./homepage_init_backend/.env
 touch ./homepage_init_bot/.env
 mkdir -p ./homepage_init_bot/src/bot/discord/data
 cp -n ./homepage_init_bot/src/bot/discord/data/data.example.json ./homepage_init_bot/src/bot/discord/data/data.json
-cp -n ./homepage_init_backend/script/init_db/presidents.example.csv ./homepage_init_backend/script/init_db/presidents.csv
 ```
 
-- `.env` 파일 권한을 제한합니다.
+- `.env` 파일 등의 권한을 제한합니다.
 ```bash
-chmod 600 .env ./homepage_init_backend/.env ./homepage_init_bot/.env
+chmod 600 ./homepage_init_backend/.env ./homepage_init_backend/.db_admin_password ./homepage_init_backend/flyway.conf ./homepage_init_bot/.env
 ```
 
-- 서브모듈에 필요한 폴더를 생성합니다. 
+- `homepage_init_backend`의 env 링크를 만들어 docker compose가 해당 env를 사용할 수 있게 합니다. 
 ```bash
-mkdir -p \
-  ./homepage_init_backend/db \
-  ./homepage_init_backend/download \
-  ./homepage_init_backend/logs \
-  ./homepage_init_backend/static/article \
-  ./homepage_init_backend/static/image/photo \
-  ./homepage_init_backend/static/image/pfps \
-  ./homepage_init_backend/static/w \
-  ./homepage_init_bot/logs
+ln -s homepage_init_backend/.env .env
 ```
 
 - 디스코드 봇을 디스코드 서버에 초대합니다. 
@@ -66,20 +56,6 @@ mkdir -p \
 ### `.env`와 data 설정
 [README.md](/README.md) 및 서브모듈의 README를 따라 필요한 값을 설정합니다. 
 
-#### `./.env`
-`./homepage_init_backend/.env`에 정의된 `SQLITE_FILENAME`과 동일한 값으로 설정합니다. 
-
-```env
-SQLITE_FILENAME="db/YOUR_DB_FILENAME.db"
-```
-
-#### `./homepage_init_backend/.env`
-`homepage_init_backend`의 README를 따릅니다. 
-
-#### `./homepage_init_bot/.env`
-`homepage_init_bot`의 README를 따릅니다. 
-
-
 ### 도커 실행
 
 linux, docker, docker compose>=2.25.0, nginx를 요구합니다. 
@@ -88,6 +64,31 @@ linux, docker, docker compose>=2.25.0, nginx를 요구합니다.
 ```bash
 docker compose up --build -d
 ```
+
+### postgresql 계정 생성
+
+pgadmin에 접속해서 다음을 실행합니다. 계정 비밀번호를 적절히 바꾸십시오.
+![pgadmin](image.png)
+
+```sql
+-- 1. 수정 권한이 있는 계정 (App용)
+CREATE USER app_user WITH PASSWORD 'app_password';
+GRANT ALL ON DATABASE main_db TO app_user;
+GRANT ALL ON ALL TABLES IN SCHEMA public TO app_user;
+GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO app_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO app_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO app_user;
+
+-- 2. 읽기 권한만 있는 계정 (ReadOnly용)
+CREATE USER readonly_user WITH PASSWORD 'readonly_password';
+GRANT CONNECT ON DATABASE main_db TO readonly_user;
+GRANT USAGE ON SCHEMA public TO readonly_user;
+GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readonly_user;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO readonly_user;
+```
+
+이후 도커 컴포즈를 다시 시작합니다. 
 
 ### Nginx 설정
 [/nginx/init.conf](/nginx/init.conf) nginx 설정 파일을 다음을 따라 설정합니다. 
