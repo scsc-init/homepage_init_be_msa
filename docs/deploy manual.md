@@ -65,31 +65,6 @@ linux, docker, docker compose>=2.25.0, nginx를 요구합니다.
 docker compose up --build -d
 ```
 
-### postgresql 계정 생성
-
-pgadmin에 접속해서 다음을 실행합니다. 계정 비밀번호를 적절히 바꾸십시오.
-![pgadmin](image.png)
-
-```sql
--- 1. 수정 권한이 있는 계정 (App용)
-CREATE USER app_user WITH PASSWORD 'app_password';
-GRANT ALL ON DATABASE main_db TO app_user;
-GRANT ALL ON ALL TABLES IN SCHEMA public TO app_user;
-GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO app_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON TABLES TO app_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL ON SEQUENCES TO app_user;
-
--- 2. 읽기 권한만 있는 계정 (ReadOnly용)
-CREATE USER readonly_user WITH PASSWORD 'readonly_password';
-GRANT CONNECT ON DATABASE main_db TO readonly_user;
-GRANT USAGE ON SCHEMA public TO readonly_user;
-GRANT SELECT ON ALL TABLES IN SCHEMA public TO readonly_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO readonly_user;
-ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT USAGE, SELECT ON SEQUENCES TO readonly_user;
-```
-
-이후 도커 컴포즈를 다시 시작합니다. 
-
 ### Nginx 설정
 [/nginx/init.conf](/nginx/init.conf) nginx 설정 파일을 다음을 따라 설정합니다. 
 
