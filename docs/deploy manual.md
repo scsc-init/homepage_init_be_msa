@@ -107,8 +107,25 @@ location ^~ /.well-known/acme-challenge/ {
     }
 ```
 
-certbot을 설치한 뒤 다음을 실행합니다.
+그 다음 테스트 파일을 만들어서 ACME 경로가 열리는지 확인합니다.
+
+```bash
+sudo mkdir -p /var/www/html/.well-known/acme-challenge
+echo test | sudo tee /var/www/html/.well-known/acme-challenge/test-file
+
+curl -i http://scsc.dev/.well-known/acme-challenge/test-file
 ```
+
+200 OK와 test가 나오면 Certbot 발급을 진행합니다.
+
+```bash
+sudo certbot certonly --webroot \
+  -w /var/www/html \
+  -d scsc.dev
+```
+
+혹시 위의 명령어가 작동하지 않으면 다음 명령어를 사용해 수동으로 진행합니다. 나오는 물음을 잘 읽고 webroot, /var/www/html를 차례로 선택합니다.
+```bash
 sudo certbot certonly --manual --preferred-challenges dns \
   --cert-name scsc.dev \
   -d scsc.dev
