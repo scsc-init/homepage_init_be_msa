@@ -2,7 +2,7 @@
 
 > 최초작성일: 2025-07-14
 >
-> 최신개정일: 2026-02-27
+> 최신개정일: 2026-07-14  
 >
 > 최신개정자: 이한경
 >
@@ -93,22 +93,29 @@ docker compose up --build -d
   sudo systemctl restart nginx
   ```
 
-## 배포 체크리스트
+## HTTPS 인증서 발급 방법
 
-### Frontend (BFF)
+현재 백엔드는 api.scsc.dev에 배포되어 있고, 문서 작성일 기준으로 작성했습니다. 
 
-- [ ] `.env` 값 조정
-- [ ] Vercel에 배포하기 (+ URL 가져다붙이기)
-- [ ] OAuth Redirect URL, URL 등록하기
+먼저 nginx/init.conf의 server 블록 안에 다음을 추가하고 nginx를 재시작합니다.
 
-### Backend DB
+```
+location ^~ /.well-known/acme-challenge/ {
+        root /var/www/html;
+        default_type "text/plain";
+        try_files $uri =404;
+    }
+```
 
-- [ ] `.env` 값 조정
-- [ ] 회장 권한 사용자 등록
+certbot을 설치한 뒤 다음을 실행합니다.
+```
+sudo certbot certonly --manual --preferred-challenges dns \
+  --cert-name scsc.dev \
+  -d scsc.dev
+```
 
-### Backend Bot
+이후 표시되는 안내에 따라 DNS record를 추가하고 계속 진행하면 정상적으로 인증서가 발급됩니다. 
 
-- [ ] `.env` 값 조정
-- [ ] `data.json` 값 조정
-- [ ] Testbed 서버 구축 및 세팅
+현재의 nginx 설정 파일과 certbot 수행 결과 등을 AI에 입력해서 HTTPS 설정을 위한 수정된 nginx 설정 파일을 받아 교체합니다.
 
+프론트엔드도 동일한 방법으로 인증서를 발급합니다.
