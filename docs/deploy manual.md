@@ -2,7 +2,7 @@
 
 > 최초작성일: 2025-07-14
 >
-> 최신개정일: 2026-02-27
+> 최신개정일: 2026-07-14  
 >
 > 최신개정자: 이한경
 >
@@ -93,22 +93,46 @@ docker compose up --build -d
   sudo systemctl restart nginx
   ```
 
-## 배포 체크리스트
+## HTTPS 인증서 발급 방법
 
-### Frontend (BFF)
+현재 백엔드는 api.scsc.dev에 배포되어 있고, 문서 작성일 기준으로 작성했습니다. 
 
-- [ ] `.env` 값 조정
-- [ ] Vercel에 배포하기 (+ URL 가져다붙이기)
-- [ ] OAuth Redirect URL, URL 등록하기
+먼저 nginx/init.conf의 server 블록 안에 다음을 추가하고 nginx를 재시작합니다.
 
-### Backend DB
+```
+location ^~ /.well-known/acme-challenge/ {
+        root /var/www/html;
+        default_type "text/plain";
+        try_files $uri =404;
+    }
+```
 
-- [ ] `.env` 값 조정
-- [ ] 회장 권한 사용자 등록
+그 다음 테스트 파일을 만들어서 ACME 경로가 열리는지 확인합니다.
 
-### Backend Bot
+```bash
+sudo mkdir -p /var/www/html/.well-known/acme-challenge
+echo test | sudo tee /var/www/html/.well-known/acme-challenge/test-file
 
-- [ ] `.env` 값 조정
-- [ ] `data.json` 값 조정
-- [ ] Testbed 서버 구축 및 세팅
+curl -i http://scsc.dev/.well-known/acme-challenge/test-file
+```
 
+200 OK와 test가 나오면 Certbot 발급을 진행합니다.
+
+```bash
+sudo certbot certonly --webroot \
+  -w /var/www/html \
+  -d scsc.dev
+```
+
+혹시 위의 명령어가 작동하지 않으면 다음 명령어를 사용해 수동으로 진행합니다. 나오는 물음을 잘 읽고 webroot, /var/www/html를 차례로 선택합니다.
+```bash
+sudo certbot certonly --manual --preferred-challenges dns \
+  --cert-name scsc.dev \
+  -d scsc.dev
+```
+
+이후 표시되는 안내에 따라 DNS record를 추가하고 계속 진행하면 정상적으로 인증서가 발급됩니다. 
+
+현재의 nginx 설정 파일과 certbot 수행 결과 등을 AI에 입력해서 HTTPS 설정을 위한 수정된 nginx 설정 파일을 받아 교체합니다.
+
+프론트엔드도 동일한 방법으로 인증서를 발급합니다.
