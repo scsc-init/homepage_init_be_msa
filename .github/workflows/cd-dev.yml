@@ -10,6 +10,13 @@ jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
+      - name: Get Runner Public IP
+        id: ip
+        uses: haythem/public-ip@v1.3
+
+      - name: Print the IP
+        run: echo "The runner IP is ${{ steps.ip.outputs.ipv4 }}"
+
       - name: Checkout Root
         uses: actions/checkout@v4
         with:
@@ -40,9 +47,9 @@ jobs:
         uses: appleboy/ssh-action@v1.0.3
         with:
           host: ${{ secrets.REMOTE_HOST }}
+          port: ${{ secrets.REMOTE_SSH_PORT }}
           username: ${{ secrets.REMOTE_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: ${{ secrets.REMOTE_SSH_PORT }}
           script: |
             cd /var/www/init_be_msa_dev
             
